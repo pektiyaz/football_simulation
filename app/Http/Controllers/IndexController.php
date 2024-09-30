@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Entity\Team;
 use App\Exceptions\NoPlayableMatchesException;
-use App\Game\League;
+use App\Services\League;
 
 class IndexController extends Controller
 {
-
     public function index(int $week = 1)
     {
-        $teamA = new Team("Chelsea");
-        $teamB = new Team("Arsenal");
-        $teamC = new Team("Manchester City");
-        $teamD = new Team("Liverpool");
+        $teamA = new Team('Chelsea');
+        $teamB = new Team('Arsenal');
+        $teamC = new Team('Manchester City');
+        $teamD = new Team('Liverpool');
 
 
         $league = new League();
@@ -30,6 +29,7 @@ class IndexController extends Controller
         } catch (NoPlayableMatchesException $e) {
             return $e->getMessage();
         }
+
         return view('table', ['data' => $data]);
     }
 }

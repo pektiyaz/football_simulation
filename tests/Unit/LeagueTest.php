@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Entity\Team;
 use App\Exceptions\NoPlayableMatchesException;
-use App\Game\League;
+use App\Services\League;
 use PHPUnit\Framework\TestCase;
 
 class LeagueTest extends TestCase
@@ -15,10 +15,10 @@ class LeagueTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $teamA = new Team("Chelsea");
-        $teamB = new Team("Arsenal");
-        $teamC = new Team("Manchester City");
-        $teamD = new Team("Liverpool");
+        $teamA = new Team('Chelsea');
+        $teamB = new Team('Arsenal');
+        $teamC = new Team('Manchester City');
+        $teamD = new Team('Liverpool');
 
         $this->league = new League();
         $this->league
@@ -50,7 +50,8 @@ class LeagueTest extends TestCase
 
     public function test_calculate_matches(): void
     {
-        $this->assertEquals(6, $this->league->calculateMatches());
+        $expectedNumberOfMatches  = 6;
+        $this->assertEquals($expectedNumberOfMatches , $this->league->calculateMatches());
     }
 
 

@@ -1,15 +1,16 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Game;
+namespace App\Services;
 
 use App\Entity\Team;
 
-class Matches {
+class Matches
+{
     private Team $teamA;
     private Team $teamB;
 
-    public function __construct(Team $teamA, Team $teamB) {
+    public function __construct(Team $teamA, Team $teamB)
+    {
         $this->teamA = $teamA;
         $this->teamB = $teamB;
     }
@@ -29,16 +30,16 @@ class Matches {
 
     public function simulateMatch(): void
     {
-        $score = rand(0,4);
-        $score2 = rand(0,4);
+        $score = rand(0, 4);
+        $score2 = rand(0, 4);
 
         $this->teamA->incMatches();
         $this->teamB->incMatches();
 
-        $winGoal = rand(0,31);
-        $losGoal = rand(0,30);
+        $winGoal = rand(0, 31);
+        $losGoal = rand(0, 30);
 
-        if($score > $score2){
+        if ($score > $score2) {
 
             $this->teamA->incWins();
             $this->teamA->setGoals($winGoal);
@@ -50,7 +51,7 @@ class Matches {
             $this->teamB->setGoalsAgainst($winGoal);
             $this->teamA->addPoints(0);
 
-        }elseif($score < $score2){
+        } elseif ($score < $score2) {
             $this->teamA->incLosses();
             $this->teamA->setGoals($losGoal);
             $this->teamA->setGoalsAgainst($winGoal);
@@ -61,7 +62,7 @@ class Matches {
             $this->teamB->setGoalsAgainst($losGoal);
             $this->teamB->addPoints(3);
 
-        }else{
+        } else {
             $this->teamA->incDraw();
             $this->teamA->setGoals($winGoal);
             $this->teamA->setGoalsAgainst($winGoal);

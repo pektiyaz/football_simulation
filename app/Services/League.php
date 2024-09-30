@@ -1,23 +1,22 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Game;
+namespace App\Services;
 
 use App\Entity\Team;
 use App\Exceptions\NoPlayableMatchesException;
 
-class League {
-
+class League
+{
     /**
      * @var array|Team[]
      */
     public array $teams = [];
-    private array $matches = [];
 
     public int $week = 1;
+    private array $matches = [];
 
 
-    public function addTeam( Team $team ): self
+    public function addTeam(Team $team): self
     {
         $this->teams[] = $team;
         return $this;
@@ -29,20 +28,20 @@ class League {
         return $teams * ($teams - 1) / 2;
     }
 
-    public function prepareMatch():  self
+    public function prepareMatch(): self
     {
         $offset = 1;
         $week = 1;
         $matchCount = 0;
-        $maxMatches = $this->calculateMatches()*2;
+        $maxMatches = $this->calculateMatches() * 2;
 
         while ($week <= $maxMatches) {
-            foreach($this->teams as $teamA){
-                foreach($this->teams as $teamB){
-                    if($teamA !== $teamB && !$this->isPlayed($teamA, $teamB)){
+            foreach ($this->teams as $teamA) {
+                foreach ($this->teams as $teamB) {
+                    if ($teamA !== $teamB && !$this->isPlayed($teamA, $teamB)) {
                         $this->matches[] = [
-                            "week" => $week,
-                            "match" => new Matches($teamA, $teamB)
+                            'week' => $week,
+                            'match' => new Matches($teamA, $teamB)
                         ];
 
                         if ($offset % 2 === 0) {
@@ -75,11 +74,11 @@ class League {
     public function isPlayed(Team $teamA, Team $teamB): bool
     {
 
-        foreach($this->matches as $match){
-            if( $match['match']->getTeamB() === $teamA && $match['match']->getTeamB() === $teamB ){
+        foreach ($this->matches as $match) {
+            if ($match['match']->getTeamB() === $teamA && $match['match']->getTeamB() === $teamB) {
                 return true;
             }
-            if( $match['match']->getTeamA() === $teamB && $match['match']->getTeamB() === $teamA ){
+            if ($match['match']->getTeamA() === $teamB && $match['match']->getTeamB() === $teamA) {
                 return true;
             }
         }
@@ -106,7 +105,7 @@ class League {
 
     public function playAll(): void
     {
-        foreach($this->matches as $match){
+        foreach ($this->matches as $match) {
             $match['match']->simulateMatch();
         }
     }
@@ -119,23 +118,25 @@ class League {
 
         $this->playAll();
 
-        throw_if( !in_array($week, array_column($this->matches, 'week')),
-            new NoPlayableMatchesException('No playable match!') );
+        throw_if(
+            !in_array($week, array_column($this->matches, 'week')),
+            new NoPlayableMatchesException('No playable match!')
+        );
 
         $result  = [];
-        $result["week"] = $week;
+        $result['week'] = $week;
 
-        foreach($this->teams as $team){
+        foreach ($this->teams as $team) {
             $result['teams'][] = $team->getLeagueTable();
-            $result['prediction'][] = ["Team" => $team->getName(), "Predict" => $this->calculatePredictionForTeam($team)];
+            $result['prediction'][] = ['Team' => $team->getName(), 'Predict' => $this->calculatePredictionForTeam($team)];
         }
-        foreach($this->matches as $match){
-            if($match['week'] === $week){
-                $result["matches"][] = [
-                    "teamA" => $match['match']->getTeamA()->getName(),
-                    "teamAGoals" => $match['match']->getTeamA()->getGoals(),
-                    "teamB" => $match['match']->getTeamB()->getName(),
-                    "teamBGoals" => $match['match']->getTeamB()->getGoals(),
+        foreach ($this->matches as $match) {
+            if ($match['week'] === $week) {
+                $result['matches'][] = [
+                    'teamA' => $match['match']->getTeamA()->getName(),
+                    'teamAGoals' => $match['match']->getTeamA()->getGoals(),
+                    'teamB' => $match['match']->getTeamB()->getName(),
+                    'teamBGoals' => $match['match']->getTeamB()->getGoals(),
                 ];
             }
         }

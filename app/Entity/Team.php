@@ -1,17 +1,15 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Entity;
 
 class Team
 {
-
     private string $name;
 
     private int $points = 0;
     private int $matches = 0;
     private int $wins = 0;
-    private int $draw =0;
+    private int $draw = 0;
     private int $losses = 0;
 
     private int $goals = 0;
@@ -42,7 +40,7 @@ class Team
     {
         return $this->points;
     }
-    public function addPoints( int $point ): void
+    public function addPoints(int $point): void
     {
         $this->points += $point;
     }
@@ -101,7 +99,7 @@ class Team
         return $this->goals;
     }
 
-    public function setGoals( int $goals ): void
+    public function setGoals(int $goals): void
     {
         $this->goals = $goals;
     }
@@ -111,20 +109,20 @@ class Team
         return $this->goalsAgainst;
     }
 
-    public function setGoalsAgainst( int $goal ): void
+    public function setGoalsAgainst(int $goal): void
     {
         $this->goalsAgainst = $goal;
     }
-    public function getLeagueTable():array
+    public function getLeagueTable(): array
     {
         return [
-            "Team" => $this->getName(),
-            "PTS" => $this->getPoints(),
-            "P" => $this->getMatches(),
-            "W" => $this->getWins(),
-            "D" => $this->getDraw(),
-            "L" => $this->getLosses(),
-            "GD" => $this->getGoalDifference()
+            'Team' => $this->getName(),
+            'PTS' => $this->getPoints(),
+            'P' => $this->getMatches(),
+            'W' => $this->getWins(),
+            'D' => $this->getDraw(),
+            'L' => $this->getLosses(),
+            'GD' => $this->getGoalDifference()
         ];
     }
 
